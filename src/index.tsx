@@ -1,6 +1,9 @@
 import {
   ApolloClient,
+  ApolloLink,
   ApolloProvider,
+  createHttpLink,
+  from,
   InMemoryCache,
   useMutation,
 } from '@apollo/client';
@@ -28,9 +31,25 @@ import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
 import { useRef } from 'react';
 import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
+import { setContext } from '@apollo/client/link/context';
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = sessionStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      'X-CSRF-TOKEN': token || '',
+    },
+  };
+});
+
+const httpLink = createHttpLink({
+  uri: '/api',
+});
 
 const client = new ApolloClient({
-  uri: '/api',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -48,6 +67,12 @@ const App = () => {
     onCompleted: (data) => {
       if (data && data.logIn) {
         setViewer(data.logIn);
+
+        if (data.logIn.token) {
+          sessionStorage.setItem('token', data.logIn.token);
+        } else {
+          sessionStorage.removeItem('token');
+        }
       }
     },
   });
