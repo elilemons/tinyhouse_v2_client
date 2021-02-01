@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const Home = () => {
-  return <h2>Home</h2>;
+export const Host = () => {
+  return <h2>Host</h2>;
 };
