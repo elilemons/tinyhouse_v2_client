@@ -20,7 +20,6 @@ interface MatchParams {
 }
 
 const { Content } = Layout;
-
 const PAGE_LIMIT = 3;
 
 export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
@@ -37,7 +36,7 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
         bookingsPage,
         limit: PAGE_LIMIT,
       },
-    }
+    },
   );
 
   if (loading) {
