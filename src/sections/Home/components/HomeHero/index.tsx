@@ -19,7 +19,7 @@ export const HomeHero = ({ onSearch }: Props) => {
     <div className="home-hero">
       <div className="home-hero__search">
         <Title className="home-hero__title">
-          Find a place you'll love to stay at
+          Find a place you'll love to stay
         </Title>
         <Search
           placeholder="Try 'Sans Fransisco'"
